@@ -75,38 +75,15 @@ async def pitola_command(ctx):
             async with session.get(url, params=params) as response:
                 data = await response.json(content_type=None)
 
-        print(f"[Klipy] Respuesta: {data}")  # Para debugging
-
-        # Extraer la lista de items según la estructura de Klipy
-        items = []
-        if isinstance(data, dict):
-            inner = data.get('data', data)
-            if isinstance(inner, list):
-                items = inner
-            elif isinstance(inner, dict):
-                items = inner.get('items', inner.get('gifs', inner.get('results', [])))
-        elif isinstance(data, list):
-            items = data
+        # Estructura de Klipy: data.data.data[].file.hd.gif.url
+        items = data.get('data', {}).get('data', [])
 
         if not items:
             await ctx.send("No encontré ningún gif de pistola en este momento.")
             return
 
         gif = random.choice(items)
-
-        # Extraer la URL del GIF
-        gif_url = None
-        media = gif.get('media') or gif.get('images') or {}
-        if isinstance(media, dict):
-            for fmt in ['gif', 'original', 'downsized', 'fixed_height']:
-                if fmt in media:
-                    entry = media[fmt]
-                    gif_url = entry.get('url') if isinstance(entry, dict) else None
-                    if gif_url:
-                        break
-        if not gif_url:
-            gif_url = (gif.get('url') or gif.get('gif_url') or
-                       gif.get('source_url') or gif.get('embed_url'))
+        gif_url = gif.get('file', {}).get('hd', {}).get('gif', {}).get('url')
 
         if not gif_url:
             await ctx.send("No pude obtener el gif. Intenta de nuevo.")
