@@ -13,7 +13,7 @@ TOKEN = os.getenv('DISCORD_TOKEN')
 # Crear el bot
 intents = discord.Intents.default()
 intents.message_content = True
-bot = commands.Bot(command_prefix=',', intents=intents)
+bot = commands.Bot(command_prefix=',', intents=intents, case_insensitive=True)
 
 def cargar_palabras():
     try:
@@ -69,33 +69,44 @@ async def pitola_command(ctx):
     """Muestra un gif de una pistola usando la API de Klipy"""
     klipy_key = os.getenv('KLIPY_API_KEY')
     url = f"https://api.klipy.com/api/v1/{klipy_key}/gifs/search"
-    params = {
-        'q': 'pistol gun',
-        'per_page': 20
-    }
+    params = {'q': 'pistol gun', 'per_page': 20}
     try:
         async with aiohttp.ClientSession() as session:
             async with session.get(url, params=params) as response:
-                data = await response.json()
+                data = await response.json(content_type=None)
 
-        items = data.get('data', {}).get('items', data.get('data', []))
+        print(f"[Klipy] Respuesta: {data}")  # Para debugging
+
+        # Extraer la lista de items según la estructura de Klipy
+        items = []
+        if isinstance(data, dict):
+            inner = data.get('data', data)
+            if isinstance(inner, list):
+                items = inner
+            elif isinstance(inner, dict):
+                items = inner.get('items', inner.get('gifs', inner.get('results', [])))
+        elif isinstance(data, list):
+            items = data
+
         if not items:
             await ctx.send("No encontré ningún gif de pistola en este momento.")
             return
 
         gif = random.choice(items)
 
-        # Intentar extraer la URL del GIF
+        # Extraer la URL del GIF
         gif_url = None
         media = gif.get('media') or gif.get('images') or {}
         if isinstance(media, dict):
             for fmt in ['gif', 'original', 'downsized', 'fixed_height']:
                 if fmt in media:
-                    gif_url = media[fmt].get('url') or media[fmt].get('gif', {}).get('url')
+                    entry = media[fmt]
+                    gif_url = entry.get('url') if isinstance(entry, dict) else None
                     if gif_url:
                         break
         if not gif_url:
-            gif_url = gif.get('url') or gif.get('gif_url') or gif.get('source_url')
+            gif_url = (gif.get('url') or gif.get('gif_url') or
+                       gif.get('source_url') or gif.get('embed_url'))
 
         if not gif_url:
             await ctx.send("No pude obtener el gif. Intenta de nuevo.")
@@ -106,7 +117,8 @@ async def pitola_command(ctx):
         await ctx.send(embed=embed)
 
     except Exception as e:
-        await ctx.send(f"Error al conectar con Klipy: {str(e)}")
+        print(f"[Klipy] Error completo: {type(e).__name__}: {e}")
+        await ctx.send(f"Error al conectar con Klipy: {type(e).__name__}: {e}")
 
 @bot.command(name='sonata')
 async def sonata_command(ctx):
