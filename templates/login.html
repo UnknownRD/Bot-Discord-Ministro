@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bot Dominicano — Login</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      min-height: 100vh;
+      background: #1a1a2e;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Segoe UI', sans-serif;
+    }
+    .card {
+      background: #16213e;
+      border-radius: 16px;
+      padding: 40px 48px;
+      width: 100%;
+      max-width: 380px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+      border: 1px solid #0f3460;
+    }
+    .logo {
+      text-align: center;
+      font-size: 48px;
+      margin-bottom: 8px;
+    }
+    h1 {
+      text-align: center;
+      color: #e94560;
+      font-size: 22px;
+      margin-bottom: 4px;
+    }
+    p.sub {
+      text-align: center;
+      color: #7a7a9d;
+      font-size: 13px;
+      margin-bottom: 28px;
+    }
+    label {
+      display: block;
+      color: #a0a0c0;
+      font-size: 13px;
+      margin-bottom: 6px;
+    }
+    input[type="password"] {
+      width: 100%;
+      padding: 12px 16px;
+      background: #0f3460;
+      border: 1px solid #1a4a80;
+      border-radius: 8px;
+      color: #fff;
+      font-size: 15px;
+      outline: none;
+      transition: border 0.2s;
+    }
+    input[type="password"]:focus {
+      border-color: #e94560;
+    }
+    button {
+      margin-top: 20px;
+      width: 100%;
+      padding: 13px;
+      background: #e94560;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    button:hover { background: #c73652; }
+    .alert {
+      margin-bottom: 16px;
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 13px;
+      background: #3d1020;
+      color: #ff6b80;
+      border: 1px solid #e94560;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="logo">🤖</div>
+    <h1>Bot Dominicano</h1>
+    <p class="sub">Panel de Administración</p>
+    {% for category, message in get_flashed_messages(with_categories=True) %}
+      <div class="alert">{{ message }}</div>
+    {% endfor %}
+    <form method="POST">
+      <label>Contraseña</label>
+      <input type="password" name="password" placeholder="••••••••" autofocus required>
+      <button type="submit">Entrar</button>
+    </form>
+  </div>
+</body>
+</html>

@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bot Dominicano — Panel</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      min-height: 100vh;
+      background: #1a1a2e;
+      font-family: 'Segoe UI', sans-serif;
+      color: #e0e0f0;
+    }
+
+    /* HEADER */
+    header {
+      background: #16213e;
+      border-bottom: 1px solid #0f3460;
+      padding: 16px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .header-left span { font-size: 28px; }
+    .header-left h1 { font-size: 18px; color: #fff; }
+    .header-left small { color: #7a7a9d; font-size: 12px; }
+    .badge {
+      background: #0f3460;
+      color: #4fc3f7;
+      border-radius: 20px;
+      padding: 4px 12px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    a.logout {
+      color: #e94560;
+      text-decoration: none;
+      font-size: 13px;
+      padding: 8px 16px;
+      border: 1px solid #e94560;
+      border-radius: 8px;
+      transition: all 0.2s;
+    }
+    a.logout:hover { background: #e94560; color: #fff; }
+
+    /* MAIN */
+    main {
+      max-width: 900px;
+      margin: 32px auto;
+      padding: 0 24px;
+    }
+
+    /* STATS */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+    .stat-card {
+      background: #16213e;
+      border: 1px solid #0f3460;
+      border-radius: 12px;
+      padding: 20px 24px;
+    }
+    .stat-card .number {
+      font-size: 36px;
+      font-weight: 700;
+      color: #e94560;
+    }
+    .stat-card .label {
+      color: #7a7a9d;
+      font-size: 13px;
+      margin-top: 4px;
+    }
+
+    /* ALERTS */
+    .alert {
+      padding: 12px 16px;
+      border-radius: 8px;
+      font-size: 14px;
+      margin-bottom: 20px;
+    }
+    .alert.success { background: #0d2b1a; color: #4caf50; border: 1px solid #4caf50; }
+    .alert.warning { background: #2b2000; color: #ffb300; border: 1px solid #ffb300; }
+    .alert.error   { background: #3d1020; color: #ff6b80; border: 1px solid #e94560; }
+
+    /* ADD FORM */
+    .add-section {
+      background: #16213e;
+      border: 1px solid #0f3460;
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 28px;
+    }
+    .add-section h2 {
+      font-size: 15px;
+      color: #a0a0c0;
+      margin-bottom: 14px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .add-row {
+      display: flex;
+      gap: 10px;
+    }
+    .add-row input {
+      flex: 1;
+      padding: 11px 16px;
+      background: #0f3460;
+      border: 1px solid #1a4a80;
+      border-radius: 8px;
+      color: #fff;
+      font-size: 14px;
+      outline: none;
+    }
+    .add-row input:focus { border-color: #e94560; }
+    .add-row button {
+      padding: 11px 22px;
+      background: #e94560;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .add-row button:hover { background: #c73652; }
+
+    /* SEARCH */
+    .search-row {
+      margin-bottom: 16px;
+    }
+    .search-row input {
+      width: 100%;
+      padding: 10px 16px;
+      background: #16213e;
+      border: 1px solid #0f3460;
+      border-radius: 8px;
+      color: #e0e0f0;
+      font-size: 14px;
+      outline: none;
+    }
+    .search-row input:focus { border-color: #e94560; }
+    .search-row input::placeholder { color: #4a4a6a; }
+
+    /* WORD LIST */
+    .words-section h2 {
+      font-size: 15px;
+      color: #a0a0c0;
+      margin-bottom: 14px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .word-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 8px;
+    }
+    .word-item {
+      background: #16213e;
+      border: 1px solid #0f3460;
+      border-radius: 8px;
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .word-item span {
+      font-size: 13px;
+      color: #c0c0e0;
+      word-break: break-all;
+    }
+    .word-item form button {
+      background: transparent;
+      border: none;
+      color: #e94560;
+      cursor: pointer;
+      font-size: 16px;
+      padding: 2px 4px;
+      border-radius: 4px;
+      transition: background 0.2s;
+      line-height: 1;
+    }
+    .word-item form button:hover { background: #3d1020; }
+
+    .empty {
+      text-align: center;
+      color: #4a4a6a;
+      padding: 40px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-left">
+    <span>🤖</span>
+    <div>
+      <h1>Bot Dominicano</h1>
+      <small>Panel de Administración</small>
+    </div>
+  </div>
+  <div style="display:flex;align-items:center;gap:12px;">
+    <span class="badge">🟢 Activo</span>
+    <a href="/logout" class="logout">Salir</a>
+  </div>
+</header>
+
+<main>
+
+  <!-- Stats -->
+  <div class="stats">
+    <div class="stat-card">
+      <div class="number">{{ total }}</div>
+      <div class="label">Palabras en lista</div>
+    </div>
+    <div class="stat-card">
+      <div class="number">🇩🇴</div>
+      <div class="label">Bot Dominicano v1.0</div>
+    </div>
+  </div>
+
+  <!-- Flash messages -->
+  {% for category, message in get_flashed_messages(with_categories=True) %}
+    <div class="alert {{ category }}">{{ message }}</div>
+  {% endfor %}
+
+  <!-- Add word -->
+  <div class="add-section">
+    <h2>➕ Agregar Mala Palabra</h2>
+    <form method="POST" action="/agregar">
+      <div class="add-row">
+        <input type="text" name="palabra" placeholder="Escribe la palabra o frase..." autocomplete="off" required>
+        <button type="submit">Agregar</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Word list -->
+  <div class="words-section">
+    <h2>📋 Lista de Palabras ({{ total }})</h2>
+    <div class="search-row">
+      <input type="text" id="buscar" placeholder="Buscar palabra..." oninput="filtrar()">
+    </div>
+    <div class="word-grid" id="wordGrid">
+      {% for palabra in palabras %}
+      <div class="word-item" data-palabra="{{ palabra }}">
+        <span>{{ palabra }}</span>
+        <form method="POST" action="/eliminar" onsubmit="return confirm('¿Eliminar «{{ palabra }}»?')">
+          <input type="hidden" name="palabra" value="{{ palabra }}">
+          <button type="submit" title="Eliminar">✕</button>
+        </form>
+      </div>
+      {% else %}
+      <div class="empty">No hay palabras en la lista.</div>
+      {% endfor %}
+    </div>
+  </div>
+
+</main>
+
+<script>
+  function filtrar() {
+    const q = document.getElementById('buscar').value.toLowerCase();
+    document.querySelectorAll('.word-item').forEach(el => {
+      el.style.display = el.dataset.palabra.includes(q) ? '' : 'none';
+    });
+  }
+</script>
+
+</body>
+</html>
