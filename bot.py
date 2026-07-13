@@ -57,7 +57,7 @@ async def ayuda_command(ctx):
         description="Aqui estan todos los comandos del bot",
         color=discord.Color.from_rgb(0, 255, 0)
     )
-    embed.add_field(name=",sonata", value="Muestra una imagen aleatoria del Sonata dominicano", inline=False)
+    embed.add_field(name=",sonata", value="Muestra un gif del Hyundai Sonata", inline=False)
     embed.add_field(name=",pitola", value="Muestra un gif de una pistola", inline=False)
     embed.add_field(name=",ayuda", value="Muestra este menu de ayuda", inline=False)
     embed.add_field(name="Funciones Automaticas", value="El bot detecta automaticamente malas palabras dominicanas y responde.", inline=False)
@@ -99,15 +99,35 @@ async def pitola_command(ctx):
 
 @bot.command(name='sonata')
 async def sonata_command(ctx):
-    sonatas = [
-        {"imagen": "https://drive.google.com/uc?export=view&id=1a_h6XgEKvof0y9Bp2tE70w92Y5OGUU-y"},
-        {"imagen": "https://drive.google.com/uc?export=view&id=1XWNMH8tXHKdXZhEE01bkyqmLgAhEyDGo"},
-        {"imagen": "https://drive.google.com/uc?export=view&id=1utRlmQ4ZKqB-sEPBZ0C0Xys3aZZ1wf2_"}
-    ]
-    sonata = random.choice(sonatas)
-    embed = discord.Embed()
-    embed.set_image(url=sonata["imagen"])
-    await ctx.send(embed=embed)
+    """Muestra un gif de Hyundai Sonata usando la API de Klipy"""
+    klipy_key = os.getenv('KLIPY_API_KEY')
+    url = f"https://api.klipy.com/api/v1/{klipy_key}/gifs/search"
+    params = {'q': 'Hyundai Sonata', 'per_page': 20}
+    try:
+        async with aiohttp.ClientSession() as session:
+            async with session.get(url, params=params) as response:
+                data = await response.json(content_type=None)
+
+        items = data.get('data', {}).get('data', [])
+
+        if not items:
+            await ctx.send("No encontré ningún gif del Hyundai Sonata en este momento.")
+            return
+
+        gif = random.choice(items)
+        gif_url = gif.get('file', {}).get('hd', {}).get('gif', {}).get('url')
+
+        if not gif_url:
+            await ctx.send("No pude obtener el gif. Intenta de nuevo.")
+            return
+
+        embed = discord.Embed(color=discord.Color.from_rgb(0, 255, 0))
+        embed.set_image(url=gif_url)
+        await ctx.send(embed=embed)
+
+    except Exception as e:
+        print(f"[Klipy Sonata] Error: {type(e).__name__}: {e}")
+        await ctx.send(f"Error al conectar con Klipy: {type(e).__name__}: {e}")
 
 def run_bot():
     bot.run(TOKEN)
