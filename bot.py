@@ -59,7 +59,7 @@ async def ayuda_command(ctx):
     embed.add_field(name=",sonata", value="Muestra una imagen aleatoria del Sonata dominicano", inline=False)
     embed.add_field(name=",ayuda", value="Muestra este menu de ayuda", inline=False)
     embed.add_field(name="Funciones Automaticas", value="El bot detecta automaticamente malas palabras dominicanas y responde.", inline=False)
-    embed.set_footer(text="Bot Dominicano v1.0")
+    embed.set_footer(text="Bot Ministro v1.0")
     await ctx.send(embed=embed)
 
 @bot.command(name='sonata')
