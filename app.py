@@ -74,3 +74,14 @@ def eliminar():
             guardar_palabras(data)
             flash(f'🗑️ Palabra "{palabra}" eliminada.', 'success')
     return redirect(url_for('index'))
+
+@app.route('/sync', methods=['POST'])
+def sync():
+    if not session.get('logged_in'):
+        return {'ok': False}, 401
+    try:
+        data = cargar_palabras()
+        total = len(data.get('palabras_malas', []))
+        return {'ok': True, 'total': total}
+    except Exception as e:
+        return {'ok': False, 'error': str(e)}, 500

@@ -212,6 +212,7 @@
   </div>
   <div style="display:flex;align-items:center;gap:12px;">
     <span class="badge">🟢 Activo</span>
+    <button onclick="sincronizar()" id="syncBtn" style="padding:8px 16px;background:#0f3460;color:#4fc3f7;border:1px solid #1a4a80;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.2s;">🔄 Sincronizar Bot</button>
     <a href="/logout" class="logout">Salir</a>
   </div>
 </header>
@@ -275,6 +276,35 @@
     document.querySelectorAll('.word-item').forEach(el => {
       el.style.display = el.dataset.palabra.includes(q) ? '' : 'none';
     });
+  }
+
+  async function sincronizar() {
+    const btn = document.getElementById('syncBtn');
+    btn.textContent = '⏳ Sincronizando...';
+    btn.disabled = true;
+    try {
+      const res = await fetch('/sync', { method: 'POST' });
+      const data = await res.json();
+      if (data.ok) {
+        btn.textContent = '✅ Sincronizado (' + data.total + ' palabras)';
+        btn.style.background = '#0d2b1a';
+        btn.style.color = '#4caf50';
+        btn.style.borderColor = '#4caf50';
+      } else {
+        btn.textContent = '❌ Error al sincronizar';
+        btn.style.color = '#ff6b80';
+      }
+    } catch (e) {
+      btn.textContent = '❌ Error de conexión';
+      btn.style.color = '#ff6b80';
+    }
+    setTimeout(() => {
+      btn.textContent = '🔄 Sincronizar Bot';
+      btn.style.background = '#0f3460';
+      btn.style.color = '#4fc3f7';
+      btn.style.borderColor = '#1a4a80';
+      btn.disabled = false;
+    }, 3000);
   }
 </script>
 
