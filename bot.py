@@ -57,9 +57,22 @@ async def ayuda_command(ctx):
         color=discord.Color.from_rgb(0, 255, 0)
     )
     embed.add_field(name=",sonata", value="Muestra una imagen aleatoria del Sonata dominicano", inline=False)
+    embed.add_field(name=",pitola", value="Muestra un gif de una pistola", inline=False)
     embed.add_field(name=",ayuda", value="Muestra este menu de ayuda", inline=False)
     embed.add_field(name="Funciones Automaticas", value="El bot detecta automaticamente malas palabras dominicanas y responde.", inline=False)
     embed.set_footer(text="Bot Ministro v1.0")
+    await ctx.send(embed=embed)
+
+@bot.command(name='pitola')
+async def pitola_command(ctx):
+    """Muestra un gif de una pistola"""
+    gifs = [
+        "https://media.tenor.com/yCxXMIAmyMIAAAAC/gun-pistol.gif",
+        "https://media.tenor.com/Yxnt3YZgjPEAAAAC/gun.gif",
+        "https://media.tenor.com/9XHx08CfXtcAAAAC/pistol-gun.gif"
+    ]
+    embed = discord.Embed(color=discord.Color.from_rgb(255, 50, 50))
+    embed.set_image(url=random.choice(gifs))
     await ctx.send(embed=embed)
 
 @bot.command(name='sonata')
