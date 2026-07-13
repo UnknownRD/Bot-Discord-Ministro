@@ -35,6 +35,10 @@ def logout():
     session.clear()
     return redirect(url_for('login'))
 
+@app.route('/health')
+def health():
+    return 'ok', 200
+
 @app.route('/')
 def index():
     if not session.get('logged_in'):
