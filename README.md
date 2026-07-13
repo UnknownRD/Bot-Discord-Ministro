@@ -1,112 +1,112 @@
-# Bot de Discord para mensajes y Sonata
+# 🤖 Bot Ministro — Bot de Discord Dominicano
 
-Este proyecto es un bot de Discord hecho en Python con discord.py. El bot tiene dos funciones principales:
+Bot de Discord con detección de malas palabras dominicanas y panel web de administración.
 
-- Detecta palabras consideradas ofensivas o inapropiadas en el chat y responde con un mensaje configurable.
-- Responde al comando ,sonata con una imagen aleatoria del Hyundai Sonata LF 2017.
-- Incluye un comando ,ayuda para ver los comandos disponibles.
+---
 
-## Archivos importantes
+## ✨ Funciones principales
 
-- discord_bot.py: lógica principal del bot.
-- .env: archivo con el token del bot de Discord.
-- local.py: ejemplo simple de Python que se usó al inicio.
-- README.md: esta documentación.
+### 🔍 Detección automática de malas palabras
+- Monitorea todos los mensajes del servidor.
+- Compara contra una lista de **214 términos** dominicanos cargada desde `words.json`.
+- Si detecta una mala palabra, responde: *"Oh, el diablo y te va a quedar así?"*
+- Detecta variantes de **"mamañema"** (`mamnema`, `mmñ`) con una respuesta especial.
+- La lista se recarga en tiempo real sin reiniciar el bot.
 
-## Requisitos
+### 📋 Comandos disponibles (prefijo: `,`)
 
-- Python 3.10 o superior.
-- Acceso a Internet para que el bot pueda conectarse a Discord.
-- Una cuenta de Discord.
-- Una aplicación de bot creada en Discord Developer Portal.
+| Comando | Descripción |
+|---------|-------------|
+| `,ayuda` | Muestra todos los comandos disponibles y funciones del bot |
+| `,pitola` | Muestra un GIF aleatorio de pistola usando la API de Klipy |
+| `,sonata` | Muestra un GIF aleatorio de Hyundai Sonata usando la API de Klipy |
 
-## Instalación
+---
 
-1. Abre la terminal en la carpeta del proyecto.
-2. Instala las librerías necesarias:
+## 🖥️ Panel de Administración Web
 
-```powershell
-pip install discord.py python-dotenv
+Interfaz web protegida con contraseña para gestionar la lista de malas palabras.
+
+**URL:** `http://localhost:5000` (o el dominio de Replit)
+
+### Rutas disponibles
+
+| Ruta | Método | Descripción |
+|------|--------|-------------|
+| `/login` | GET / POST | Inicio de sesión con contraseña de administrador |
+| `/logout` | GET | Cierra la sesión |
+| `/` | GET | Dashboard principal — lista de palabras monitoreadas |
+| `/agregar` | POST | Agrega una nueva palabra a la lista |
+| `/eliminar` | POST | Elimina una palabra de la lista |
+| `/sync` | POST | Devuelve el total de palabras activas (JSON) |
+| `/health` | GET | Health check — devuelve `ok` |
+
+---
+
+## ⚙️ Arquitectura
+
+```
+main.py          → Punto de entrada: lanza Flask en hilo daemon + bot en hilo principal
+bot.py           → Lógica del bot de Discord (comandos, detección de palabras)
+app.py           → Panel web Flask
+words.json       → Lista de malas palabras (fuente compartida entre bot y panel)
+templates/
+  login.html     → Página de inicio de sesión
+  index.html     → Dashboard del panel
 ```
 
-## Configuración del token
+**Inicio del sistema (`main.py`):**
+- `flask_thread` — hilo daemon que sirve el panel en `0.0.0.0:5000`
+- `run_bot()` — corre el bot de Discord en el hilo principal
 
-1. Crea una aplicación en Discord Developer Portal.
-2. Ve a la sección Bot.
-3. Crea un bot y copia el token.
-4. Crea un archivo .env en la carpeta del proyecto con este contenido:
+---
 
-```env
-DISCORD_TOKEN=tu_token_aqui
+## 🔐 Secrets requeridos
+
+Configurados como variables de entorno en Replit:
+
+| Secret | Descripción |
+|--------|-------------|
+| `DISCORD_TOKEN` | Token del bot de Discord |
+| `ADMIN_PASSWORD` | Contraseña para el panel web |
+| `KLIPY_API_KEY` | API key de Klipy para búsqueda de GIFs |
+| `SESSION_SECRET` | Clave secreta para las sesiones de Flask |
+
+---
+
+## 🚀 Cómo correrlo
+
+El proyecto corre en **Replit** usando el workflow **Discord Bot**:
+
+```
+python main.py
 ```
 
-5. Guarda el archivo.
+Esto inicia tanto el bot de Discord como el panel web simultáneamente.
 
-## Activar permisos del bot en Discord
+---
 
-1. En Discord Developer Portal entra a OAuth2 > URL Generator.
-2. Marca el scope bot.
-3. En permisos del bot marca:
-   - Send Messages
-   - Read Messages/View Channels
-   - Embed Links
-4. Usa la URL generada para invitar el bot a tu servidor.
+## 🌐 APIs externas
 
-## Ejecutar el bot
+### Klipy
+- Endpoint: `https://api.klipy.com/api/v1/{API_KEY}/gifs/search`
+- Usada por: `,pitola` y `,sonata`
+- Estructura de respuesta: `data.data.data[].file.hd.gif.url`
 
-En la terminal ejecuta:
+---
 
-```powershell
-python discord_bot.py
+## 📦 Dependencias
+
+```
+discord.py
+python-dotenv
+flask
+gunicorn
+aiohttp
 ```
 
-Si todo está bien, verás un mensaje indicando que el bot se conectó.
+---
 
-## Comandos del bot
+## 🔗 Repositorio
 
-- ,sonata: muestra una imagen aleatoria del Sonata LF 2017.
-- ,ayuda: muestra una lista de comandos disponibles.
-
-## Cómo personalizar el bot
-
-### Cambiar las palabras que detecta
-
-Abre discord_bot.py y busca la lista llamada palabras_malas. Agrega o quita palabras según lo que quieras.
-
-### Cambiar el mensaje de respuesta
-
-En el bloque del evento on_message, cambia los textos que se envían al canal.
-
-### Cambiar las imágenes del comando ,sonata
-
-En el comando sonata_command cambia las URLs de las imágenes que están dentro de la lista sonatas.
-
-### Cambiar el prefijo del bot
-
-En discord_bot.py cambia este valor:
-
-```python
-bot = commands.Bot(command_prefix=',', intents=intents)
-```
-
-### Cambiar el nombre del bot
-
-En Discord Developer Portal ve a General Information y cambia el nombre de la aplicación.
-
-## Recomendaciones
-
-- Nunca compartas el token del bot.
-- Reinicia el bot cada vez que hagas cambios en el código.
-- Mantén el bot corriendo en una terminal abierta o en un servicio de hosting si lo quieres activo las 24 horas.
-
-## Subir cambios a GitHub
-
-Si quieres guardar tus cambios en GitHub, usa:
-
-```powershell
-git add .
-git commit -m "Describe tus cambios"
-git push origin main
-```
-
-Si Git te pide autenticación, usa un Personal Access Token de GitHub en lugar de la contraseña.
+[https://github.com/UnknownRD/Bot-Discord-Ministro](https://github.com/UnknownRD/Bot-Discord-Ministro)
