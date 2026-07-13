@@ -83,7 +83,8 @@ async def on_message(message):
         'mamón', 'mamon',
         'buchemierda', 'buchemielda', 'bucheemierda',
         'rompeculo', 'pajuil', 'chapeadora', 'sabandija', 'tollo', 'toyo',
-        'mmg', 'perra', 'sucia'
+        'mmg', 'perra', 'sucia',
+        'hijo de perra', 'hijoeperra', 'hijodeperra'
     ]
     
     for palabra in palabras_malas:
