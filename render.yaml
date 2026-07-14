@@ -1,15 +1,21 @@
 services:
   - type: web
-    name: bot-web-panel
+    name: ministro-bot
     env: python
     plan: free
     region: oregon
     buildCommand: pip install -r requirements.txt
-    startCommand: gunicorn app:app --bind 0.0.0.0:$PORT
+    startCommand: python main.py
     envVars:
       - key: PYTHON_VERSION
-        value: 3.12.0
+        value: "3.12.0"
+      - key: DISCORD_TOKEN
+        sync: false
+      - key: KLIPY_API_KEY
+        sync: false
       - key: SESSION_SECRET
-        value: cambia-esta-clave
+        sync: false
       - key: ADMIN_PASSWORD
-        value: admin
+        sync: false
+      - key: PORT
+        value: "10000"
