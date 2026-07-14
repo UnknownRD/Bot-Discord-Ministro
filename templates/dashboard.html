@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block page_title %}🏠 Dashboard{% endblock %}
+
+{% block content %}
+
+<div class="stats-grid">
+  <div class="stat-card">
+    <div class="stat-icon">🤬</div>
+    <div class="stat-value">{{ total_palabras }}</div>
+    <div class="stat-label">Palabras monitoreadas</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon">😂</div>
+    <div class="stat-value">{{ total_chistes }}</div>
+    <div class="stat-label">Chistes disponibles</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon">🎱</div>
+    <div class="stat-value">{{ total_8ball }}</div>
+    <div class="stat-label">Respuestas 8Ball</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon">📋</div>
+    <div class="stat-value">{{ total_comandos }}</div>
+    <div class="stat-label">Comandos activos</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon">📊</div>
+    <div class="stat-value">{{ total_logs }}</div>
+    <div class="stat-label">Detecciones totales</div>
+  </div>
+</div>
+
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+
+  <!-- Últimas detecciones -->
+  <div class="card">
+    <div class="card-title">📊 Últimas detecciones</div>
+    {% if ultimos_logs %}
+      {% for log in ultimos_logs %}
+      <div class="log-item">
+        <div class="log-ts">{{ log.timestamp }}</div>
+        <div class="log-content">
+          <div class="log-user">{{ log.usuario }}</div>
+          <div class="log-msg">{{ log.contenido }}</div>
+          <div style="margin-top:4px;">
+            <span class="badge {% if log.tipo == 'mamañema' %}badge-red{% else %}badge-yellow{% endif %}">
+              {{ log.tipo }}
+            </span>
+            <span style="font-size:11px;color:var(--muted);margin-left:6px;">{{ log.canal }}</span>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+      <div style="margin-top:12px;">
+        <a href="{{ url_for('actividad') }}" class="btn btn-secondary btn-sm">Ver todo →</a>
+      </div>
+    {% else %}
+      <div class="empty">
+        <div class="empty-icon">🕊️</div>
+        <p>Sin detecciones aún.</p>
+      </div>
+    {% endif %}
+  </div>
+
+  <!-- Accesos rápidos -->
+  <div class="card">
+    <div class="card-title">⚡ Acceso rápido</div>
+    <div style="display:flex;flex-direction:column;gap:10px;">
+      <a href="{{ url_for('palabras') }}" class="btn btn-secondary" style="width:100%;justify-content:flex-start;">
+        🤬 &nbsp; Gestionar palabras malas
+      </a>
+      <a href="{{ url_for('chistes') }}" class="btn btn-secondary" style="width:100%;justify-content:flex-start;">
+        😂 &nbsp; Editar chistes
+      </a>
+      <a href="{{ url_for('bola8') }}" class="btn btn-secondary" style="width:100%;justify-content:flex-start;">
+        🎱 &nbsp; Editar respuestas 8Ball
+      </a>
+      <a href="{{ url_for('comandos') }}" class="btn btn-secondary" style="width:100%;justify-content:flex-start;">
+        📋 &nbsp; Ver todos los comandos
+      </a>
+      <a href="{{ url_for('actividad') }}" class="btn btn-secondary" style="width:100%;justify-content:flex-start;">
+        📊 &nbsp; Ver log de actividad
+      </a>
+    </div>
+
+    <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--border);">
+      <div class="card-title">ℹ️ Información del bot</div>
+      <table>
+        <tr>
+          <td style="color:var(--muted);width:130px;">Prefijo</td>
+          <td><code style="background:var(--bg);padding:2px 6px;border-radius:4px;">,</code></td>
+        </tr>
+        <tr>
+          <td style="color:var(--muted);">Slash commands</td>
+          <td><span class="badge badge-green">✅ Activo</span></td>
+        </tr>
+        <tr>
+          <td style="color:var(--muted);">Detección automática</td>
+          <td><span class="badge badge-green">✅ Activa</span></td>
+        </tr>
+        <tr>
+          <td style="color:var(--muted);">API GIFs</td>
+          <td><span class="badge badge-blue">Klipy</span></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+</div>
+{% endblock %}

@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bot Ministro — {% block title %}Panel{% endblock %}</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #0d1117;
+      --surface:  #161b22;
+      --border:   #21262d;
+      --accent:   #e94560;
+      --accent2:  #4fc3f7;
+      --text:     #c9d1d9;
+      --muted:    #8b949e;
+      --green:    #3fb950;
+      --yellow:   #d29922;
+      --sidebar-w: 220px;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      display: flex;
+      min-height: 100vh;
+      font-size: 14px;
+    }
+
+    /* ── SIDEBAR ── */
+    .sidebar {
+      width: var(--sidebar-w);
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      top: 0; left: 0; bottom: 0;
+      z-index: 100;
+    }
+    .sidebar-brand {
+      padding: 20px 16px 16px;
+      border-bottom: 1px solid var(--border);
+    }
+    .sidebar-brand .bot-name {
+      font-size: 16px;
+      font-weight: 700;
+      color: #fff;
+    }
+    .sidebar-brand .bot-sub {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+    .sidebar-brand .status-dot {
+      display: inline-block;
+      width: 8px; height: 8px;
+      background: var(--green);
+      border-radius: 50%;
+      margin-right: 6px;
+      box-shadow: 0 0 6px var(--green);
+    }
+    .sidebar nav {
+      flex: 1;
+      padding: 12px 8px;
+      overflow-y: auto;
+    }
+    .nav-section {
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      padding: 8px 8px 4px;
+    }
+    .nav-link {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 10px;
+      border-radius: 6px;
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 13px;
+      transition: background 0.15s, color 0.15s;
+      margin-bottom: 2px;
+    }
+    .nav-link:hover { background: var(--border); color: var(--text); }
+    .nav-link.active { background: rgba(233,69,96,0.15); color: var(--accent); font-weight: 600; }
+    .nav-link .icon { font-size: 16px; width: 20px; text-align: center; }
+    .nav-link .badge-count {
+      margin-left: auto;
+      background: var(--border);
+      color: var(--muted);
+      border-radius: 10px;
+      padding: 1px 7px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+    .sidebar-footer {
+      padding: 12px 16px;
+      border-top: 1px solid var(--border);
+    }
+    .sidebar-footer a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: color 0.15s;
+    }
+    .sidebar-footer a:hover { color: var(--accent); }
+
+    /* ── MAIN ── */
+    .main {
+      margin-left: var(--sidebar-w);
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    .topbar {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+    .topbar h1 {
+      font-size: 17px;
+      font-weight: 600;
+      color: #fff;
+    }
+    .topbar .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .content {
+      padding: 28px;
+      flex: 1;
+    }
+
+    /* ── CARDS ── */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px 24px;
+    }
+    .card-title {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 16px;
+    }
+
+    /* ── STATS GRID ── */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 18px 20px;
+    }
+    .stat-card .stat-icon { font-size: 24px; margin-bottom: 8px; }
+    .stat-card .stat-value { font-size: 30px; font-weight: 700; color: #fff; }
+    .stat-card .stat-label { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+    /* ── ALERTS ── */
+    .alert {
+      padding: 11px 16px;
+      border-radius: 8px;
+      font-size: 13px;
+      margin-bottom: 16px;
+      border-left: 3px solid;
+    }
+    .alert.success { background: #0d2b1a; color: #3fb950; border-color: #3fb950; }
+    .alert.warning { background: #2b1f00; color: #d29922; border-color: #d29922; }
+    .alert.error   { background: #2b0e16; color: #f85149; border-color: #f85149; }
+
+    /* ── FORM ELEMENTS ── */
+    input[type=text], textarea {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--text);
+      padding: 9px 13px;
+      font-size: 13px;
+      outline: none;
+      transition: border-color 0.15s;
+      font-family: inherit;
+    }
+    input[type=text]:focus, textarea:focus { border-color: var(--accent); }
+    input[type=text]::placeholder, textarea::placeholder { color: var(--muted); }
+    textarea { resize: vertical; min-height: 80px; }
+
+    /* ── BUTTONS ── */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: opacity 0.15s, filter 0.15s;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+    .btn:hover { filter: brightness(1.1); }
+    .btn:active { filter: brightness(0.9); }
+    .btn-primary { background: var(--accent); color: #fff; }
+    .btn-secondary { background: var(--border); color: var(--text); }
+    .btn-danger { background: #2b0e16; color: #f85149; border: 1px solid #f85149; }
+    .btn-sm { padding: 5px 10px; font-size: 12px; }
+    .btn-icon { padding: 6px 8px; background: transparent; border: none; color: var(--muted); cursor: pointer; border-radius: 4px; font-size: 14px; transition: background 0.15s, color 0.15s; }
+    .btn-icon:hover { background: var(--border); color: var(--accent); }
+
+    /* ── TABLE ── */
+    table { width: 100%; border-collapse: collapse; }
+    th { font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; padding: 10px 12px; border-bottom: 1px solid var(--border); text-align: left; }
+    td { padding: 10px 12px; border-bottom: 1px solid var(--border); font-size: 13px; color: var(--text); vertical-align: top; }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: rgba(255,255,255,0.02); }
+
+    /* ── WORD GRID ── */
+    .word-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 8px;
+    }
+    .word-item {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 8px 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .word-item span { font-size: 13px; word-break: break-all; }
+    .word-item button {
+      background: transparent; border: none; color: var(--muted);
+      cursor: pointer; font-size: 14px; padding: 2px 4px;
+      border-radius: 4px; transition: color 0.15s, background 0.15s;
+      flex-shrink: 0;
+    }
+    .word-item button:hover { color: var(--accent); background: rgba(233,69,96,0.12); }
+
+    /* ── LIST ITEMS (chistes / 8ball) ── */
+    .list-item {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px 16px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+    .list-item-text { flex: 1; font-size: 13px; line-height: 1.5; }
+    .list-item-num { font-size: 11px; color: var(--muted); margin-right: 8px; flex-shrink: 0; padding-top: 2px; }
+
+    /* ── BADGES ── */
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+    .badge-green { background: #0d2b1a; color: var(--green); }
+    .badge-blue  { background: #0d1f2b; color: var(--accent2); }
+    .badge-red   { background: #2b0e16; color: #f85149; }
+    .badge-yellow{ background: #2b1f00; color: var(--yellow); }
+
+    /* ── EMPTY STATE ── */
+    .empty { text-align: center; color: var(--muted); padding: 48px 20px; }
+    .empty .empty-icon { font-size: 40px; margin-bottom: 12px; }
+    .empty p { font-size: 13px; }
+
+    /* ── LOG ITEM ── */
+    .log-item {
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+    .log-item:last-child { border-bottom: none; }
+    .log-ts { font-size: 11px; color: var(--muted); white-space: nowrap; padding-top: 1px; }
+    .log-content { flex: 1; }
+    .log-content .log-user { font-weight: 600; color: var(--accent2); }
+    .log-content .log-msg { font-size: 12px; color: var(--muted); margin-top: 2px; word-break: break-all; }
+
+    /* ── SEARCH ── */
+    .search-box { position: relative; }
+    .search-box input { padding-left: 34px; width: 100%; }
+    .search-box .search-icon { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: var(--muted); font-size: 14px; }
+
+    /* ── FORM ROW ── */
+    .form-row { display: flex; gap: 8px; }
+    .form-row input { flex: 1; }
+
+    /* ── SECTION HEADER ── */
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+    .section-header h2 { font-size: 14px; font-weight: 600; color: var(--text); }
+
+    /* ── SCROLLBAR ── */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+  </style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sidebar-brand">
+    <div class="bot-name">🤖 Bot Ministro</div>
+    <div class="bot-sub"><span class="status-dot"></span>En línea</div>
+  </div>
+  <nav>
+    <div class="nav-section">General</div>
+    <a href="{{ url_for('dashboard') }}" class="nav-link {% if request.endpoint == 'dashboard' %}active{% endif %}">
+      <span class="icon">🏠</span> Dashboard
+    </a>
+    <a href="{{ url_for('comandos') }}" class="nav-link {% if request.endpoint == 'comandos' %}active{% endif %}">
+      <span class="icon">📋</span> Comandos
+    </a>
+    <a href="{{ url_for('actividad') }}" class="nav-link {% if request.endpoint == 'actividad' %}active{% endif %}">
+      <span class="icon">📊</span> Actividad
+    </a>
+
+    <div class="nav-section" style="margin-top:8px;">Contenido</div>
+    <a href="{{ url_for('palabras') }}" class="nav-link {% if request.endpoint == 'palabras' %}active{% endif %}">
+      <span class="icon">🤬</span> Palabras Malas
+    </a>
+    <a href="{{ url_for('chistes') }}" class="nav-link {% if request.endpoint == 'chistes' %}active{% endif %}">
+      <span class="icon">😂</span> Chistes
+    </a>
+    <a href="{{ url_for('bola8') }}" class="nav-link {% if request.endpoint == 'bola8' %}active{% endif %}">
+      <span class="icon">🎱</span> Respuestas 8Ball
+    </a>
+  </nav>
+  <div class="sidebar-footer">
+    <a href="{{ url_for('logout') }}">🚪 Cerrar sesión</a>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<div class="main">
+  <div class="topbar">
+    <h1>{% block page_title %}Panel{% endblock %}</h1>
+    <div class="topbar-right">
+      {% block topbar_actions %}{% endblock %}
+    </div>
+  </div>
+  <div class="content">
+    {% for category, message in get_flashed_messages(with_categories=True) %}
+      <div class="alert {{ category }}">{{ message }}</div>
+    {% endfor %}
+    {% block content %}{% endblock %}
+  </div>
+</div>
+
+{% block scripts %}{% endblock %}
+</body>
+</html>

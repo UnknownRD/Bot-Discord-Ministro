@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}Chistes{% endblock %}
+{% block page_title %}😂 Chistes{% endblock %}
+
+{% block topbar_actions %}
+  <span style="font-size:13px;color:var(--muted);">{{ chistes|length }} chistes</span>
+{% endblock %}
+
+{% block content %}
+
+<!-- Agregar -->
+<div class="card" style="margin-bottom:16px;">
+  <div class="card-title">➕ Agregar chiste</div>
+  <form method="POST" action="{{ url_for('chistes_agregar') }}">
+    <div style="display:flex;flex-direction:column;gap:8px;">
+      <textarea name="chiste" placeholder="Escribe el chiste completo aquí..." required></textarea>
+      <div>
+        <button type="submit" class="btn btn-primary">Agregar chiste</button>
+      </div>
+    </div>
+  </form>
+</div>
+
+<!-- Lista -->
+<div class="card">
+  <div class="card-title">📋 Lista de chistes ({{ chistes|length }})</div>
+  {% if chistes %}
+    {% for chiste in chistes %}
+    <div class="list-item">
+      <span class="list-item-num">#{{ loop.index }}</span>
+      <span class="list-item-text">{{ chiste }}</span>
+      <form method="POST" action="{{ url_for('chistes_eliminar') }}" onsubmit="return confirm('¿Eliminar este chiste?')">
+        <input type="hidden" name="idx" value="{{ loop.index0 }}">
+        <button type="submit" class="btn-icon" title="Eliminar">✕</button>
+      </form>
+    </div>
+    {% endfor %}
+  {% else %}
+  <div class="empty">
+    <div class="empty-icon">😶</div>
+    <p>No hay chistes. ¡Agrega el primero!</p>
+  </div>
+  {% endif %}
+</div>
+
+{% endblock %}

@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block title %}Actividad{% endblock %}
+{% block page_title %}📊 Log de Actividad{% endblock %}
+
+{% block topbar_actions %}
+  {% if logs %}
+  <form method="POST" action="{{ url_for('actividad_limpiar') }}" onsubmit="return confirm('¿Limpiar todo el log de actividad?')">
+    <button type="submit" class="btn btn-danger btn-sm">🗑️ Limpiar log</button>
+  </form>
+  {% endif %}
+{% endblock %}
+
+{% block content %}
+
+<div class="card">
+  <div class="section-header">
+    <h2>Detecciones registradas ({{ logs|length }})</h2>
+    {% if logs %}
+    <div class="search-box" style="width:220px;">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="buscar" placeholder="Buscar usuario..." oninput="filtrar()">
+    </div>
+    {% endif %}
+  </div>
+
+  {% if logs %}
+  <table id="logTable">
+    <thead>
+      <tr>
+        <th style="width:140px;">Fecha</th>
+        <th style="width:80px;">Tipo</th>
+        <th style="width:160px;">Usuario</th>
+        <th style="width:120px;">Servidor</th>
+        <th>Mensaje</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for log in logs %}
+      <tr data-user="{{ log.usuario|lower }}">
+        <td style="color:var(--muted);font-size:12px;">{{ log.timestamp }}</td>
+        <td>
+          {% if log.tipo == 'mamañema' %}
+            <span class="badge badge-red">mamañema</span>
+          {% else %}
+            <span class="badge badge-yellow">palabra</span>
+          {% endif %}
+        </td>
+        <td style="font-size:12px;color:var(--accent2);">{{ log.usuario }}</td>
+        <td style="font-size:12px;color:var(--muted);">{{ log.servidor }}</td>
+        <td style="font-size:12px;word-break:break-all;">{{ log.contenido }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <div class="empty">
+    <div class="empty-icon">🕊️</div>
+    <p>No hay actividad registrada todavía.</p>
+    <p style="margin-top:6px;font-size:12px;">Las detecciones aparecerán aquí automáticamente.</p>
+  </div>
+  {% endif %}
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+  function filtrar() {
+    const q = document.getElementById('buscar').value.toLowerCase();
+    document.querySelectorAll('#logTable tbody tr').forEach(row => {
+      row.style.display = row.dataset.user.includes(q) ? '' : 'none';
+    });
+  }
+</script>
+{% endblock %}

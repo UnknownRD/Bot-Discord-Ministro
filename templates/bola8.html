@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}Respuestas 8Ball{% endblock %}
+{% block page_title %}🎱 Respuestas 8Ball{% endblock %}
+
+{% block topbar_actions %}
+  <span style="font-size:13px;color:var(--muted);">{{ respuestas|length }} respuestas</span>
+{% endblock %}
+
+{% block content %}
+
+<div style="margin-bottom:16px;padding:12px 16px;background:var(--surface);border:1px solid var(--border);border-radius:8px;font-size:12px;color:var(--muted);">
+  💡 Usa emojis de color al inicio para indicar el tipo: <strong style="color:#3fb950;">🟢</strong> Sí &nbsp;|&nbsp; <strong style="color:#d29922;">🟡</strong> Tal vez &nbsp;|&nbsp; <strong style="color:#f85149;">🔴</strong> No
+</div>
+
+<!-- Agregar -->
+<div class="card" style="margin-bottom:16px;">
+  <div class="card-title">➕ Agregar respuesta</div>
+  <form method="POST" action="{{ url_for('bola8_agregar') }}">
+    <div class="form-row">
+      <input type="text" name="respuesta" placeholder="ej: 🟢 Definitivamente sí." required>
+      <button type="submit" class="btn btn-primary">Agregar</button>
+    </div>
+  </form>
+</div>
+
+<!-- Lista -->
+<div class="card">
+  <div class="card-title">📋 Respuestas actuales ({{ respuestas|length }})</div>
+  {% if respuestas %}
+    {% for respuesta in respuestas %}
+    <div class="list-item">
+      <span class="list-item-num">#{{ loop.index }}</span>
+      <span class="list-item-text">{{ respuesta }}</span>
+      <form method="POST" action="{{ url_for('bola8_eliminar') }}" onsubmit="return confirm('¿Eliminar esta respuesta?')">
+        <input type="hidden" name="idx" value="{{ loop.index0 }}">
+        <button type="submit" class="btn-icon" title="Eliminar">✕</button>
+      </form>
+    </div>
+    {% endfor %}
+  {% else %}
+  <div class="empty">
+    <div class="empty-icon">🎱</div>
+    <p>No hay respuestas. ¡Agrega la primera!</p>
+  </div>
+  {% endif %}
+</div>
+
+{% endblock %}

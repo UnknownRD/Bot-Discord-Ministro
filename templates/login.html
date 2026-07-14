@@ -3,101 +3,108 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bot Ministro — Login</title>
+  <title>Bot Ministro — Acceso</title>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     body {
+      background: #0d1117;
+      color: #c9d1d9;
+      font-family: 'Segoe UI', system-ui, sans-serif;
       min-height: 100vh;
-      background: #1a1a2e;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-family: 'Segoe UI', sans-serif;
     }
-    .card {
-      background: #16213e;
-      border-radius: 16px;
-      padding: 40px 48px;
+    .login-box {
+      background: #161b22;
+      border: 1px solid #21262d;
+      border-radius: 12px;
+      padding: 40px 36px;
       width: 100%;
       max-width: 380px;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.4);
-      border: 1px solid #0f3460;
     }
-    .logo {
+    .login-brand {
       text-align: center;
-      font-size: 48px;
-      margin-bottom: 8px;
-    }
-    h1 {
-      text-align: center;
-      color: #e94560;
-      font-size: 22px;
-      margin-bottom: 4px;
-    }
-    p.sub {
-      text-align: center;
-      color: #7a7a9d;
-      font-size: 13px;
       margin-bottom: 28px;
     }
+    .login-brand .icon { font-size: 42px; margin-bottom: 8px; }
+    .login-brand h1 { font-size: 20px; font-weight: 700; color: #fff; }
+    .login-brand p { font-size: 13px; color: #8b949e; margin-top: 4px; }
+
+    .alert {
+      padding: 10px 14px;
+      border-radius: 6px;
+      font-size: 13px;
+      margin-bottom: 16px;
+      border-left: 3px solid #f85149;
+      background: #2b0e16;
+      color: #f85149;
+    }
+
     label {
       display: block;
-      color: #a0a0c0;
-      font-size: 13px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #8b949e;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
       margin-bottom: 6px;
     }
-    input[type="password"] {
+    input[type=password] {
       width: 100%;
-      padding: 12px 16px;
-      background: #0f3460;
-      border: 1px solid #1a4a80;
-      border-radius: 8px;
-      color: #fff;
-      font-size: 15px;
+      background: #0d1117;
+      border: 1px solid #21262d;
+      border-radius: 6px;
+      color: #c9d1d9;
+      padding: 10px 14px;
+      font-size: 14px;
       outline: none;
-      transition: border 0.2s;
+      transition: border-color 0.15s;
+      margin-bottom: 20px;
     }
-    input[type="password"]:focus {
-      border-color: #e94560;
-    }
+    input[type=password]:focus { border-color: #e94560; }
+
     button {
-      margin-top: 20px;
       width: 100%;
-      padding: 13px;
       background: #e94560;
       color: #fff;
       border: none;
-      border-radius: 8px;
-      font-size: 15px;
+      border-radius: 6px;
+      padding: 11px;
+      font-size: 14px;
       font-weight: 600;
       cursor: pointer;
-      transition: background 0.2s;
+      transition: filter 0.15s;
     }
-    button:hover { background: #c73652; }
-    .alert {
-      margin-bottom: 16px;
-      padding: 10px 14px;
-      border-radius: 8px;
-      font-size: 13px;
-      background: #3d1020;
-      color: #ff6b80;
-      border: 1px solid #e94560;
+    button:hover { filter: brightness(1.1); }
+
+    .login-footer {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 12px;
+      color: #8b949e;
     }
   </style>
 </head>
 <body>
-  <div class="card">
-    <div class="logo">🤖</div>
-    <h1>Bot Ministro</h1>
-    <p class="sub">Panel de Administración</p>
+  <div class="login-box">
+    <div class="login-brand">
+      <div class="icon">🤖</div>
+      <h1>Bot Ministro</h1>
+      <p>Panel de Administración</p>
+    </div>
+
     {% for category, message in get_flashed_messages(with_categories=True) %}
       <div class="alert">{{ message }}</div>
     {% endfor %}
+
     <form method="POST">
       <label>Contraseña</label>
       <input type="password" name="password" placeholder="••••••••" autofocus required>
-      <button type="submit">Entrar</button>
+      <button type="submit">Entrar al panel</button>
     </form>
+
+    <div class="login-footer">🇩🇴 Bot Dominicano v2.0</div>
   </div>
 </body>
 </html>

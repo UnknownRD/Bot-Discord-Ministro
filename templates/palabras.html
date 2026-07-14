@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block title %}Palabras Malas{% endblock %}
+{% block page_title %}🤬 Palabras Malas{% endblock %}
+
+{% block topbar_actions %}
+  <span style="font-size:13px;color:var(--muted);">{{ total }} palabras monitoreadas</span>
+{% endblock %}
+
+{% block content %}
+
+<!-- Agregar -->
+<div class="card" style="margin-bottom:16px;">
+  <div class="card-title">➕ Agregar palabra o frase</div>
+  <form method="POST" action="{{ url_for('palabras_agregar') }}">
+    <div class="form-row">
+      <input type="text" name="palabra" placeholder="Escribe la palabra o frase..." autocomplete="off" required>
+      <button type="submit" class="btn btn-primary">Agregar</button>
+    </div>
+  </form>
+</div>
+
+<!-- Lista -->
+<div class="card">
+  <div class="section-header">
+    <h2>📋 Lista ({{ total }})</h2>
+    <div class="search-box" style="width:220px;">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="buscar" placeholder="Buscar..." oninput="filtrar()">
+    </div>
+  </div>
+
+  {% if palabras %}
+  <div class="word-grid" id="wordGrid">
+    {% for palabra in palabras %}
+    <div class="word-item" data-p="{{ palabra }}">
+      <span>{{ palabra }}</span>
+      <form method="POST" action="{{ url_for('palabras_eliminar') }}" onsubmit="return confirm('¿Eliminar «{{ palabra }}»?')">
+        <input type="hidden" name="palabra" value="{{ palabra }}">
+        <button type="submit" title="Eliminar">✕</button>
+      </form>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="empty">
+    <div class="empty-icon">📭</div>
+    <p>No hay palabras en la lista.</p>
+  </div>
+  {% endif %}
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+  function filtrar() {
+    const q = document.getElementById('buscar').value.toLowerCase();
+    document.querySelectorAll('.word-item').forEach(el => {
+      el.style.display = el.dataset.p.includes(q) ? '' : 'none';
+    });
+  }
+</script>
+{% endblock %}
