@@ -1,0 +1,70 @@
+2026-07-14T12:23:16.545896608Z   Downloading aiohappyeyeballs-2.7.1-py3-none-any.whl.metadata (5.9 kB)
+2026-07-14T12:23:16.576471216Z Collecting aiosignal>=1.4.0 (from aiohttp>=3.9.0->-r requirements.txt (line 5))
+2026-07-14T12:23:16.586198352Z   Downloading aiosignal-1.4.0-py3-none-any.whl.metadata (3.7 kB)
+2026-07-14T12:23:16.608302441Z Collecting attrs>=17.3.0 (from aiohttp>=3.9.0->-r requirements.txt (line 5))
+2026-07-14T12:23:16.61817392Z   Downloading attrs-26.1.0-py3-none-any.whl.metadata (8.8 kB)
+2026-07-14T12:23:16.698744799Z Collecting frozenlist>=1.1.1 (from aiohttp>=3.9.0->-r requirements.txt (line 5))
+2026-07-14T12:23:16.70870896Z   Downloading frozenlist-1.8.0-cp314-cp314-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl.metadata (20 kB)
+2026-07-14T12:23:16.952936828Z Collecting multidict<7.0,>=4.5 (from aiohttp>=3.9.0->-r requirements.txt (line 5))
+2026-07-14T12:23:16.963325568Z   Downloading multidict-6.7.1-cp314-cp314-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (5.3 kB)
+2026-07-14T12:23:17.044498269Z Collecting propcache>=0.2.0 (from aiohttp>=3.9.0->-r requirements.txt (line 5))
+2026-07-14T12:23:17.058956446Z   Downloading propcache-0.5.2-cp314-cp314-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (16 kB)
+2026-07-14T12:23:17.331906733Z Collecting yarl<2.0,>=1.17.0 (from aiohttp>=3.9.0->-r requirements.txt (line 5))
+2026-07-14T12:23:17.341737062Z   Downloading yarl-1.24.2-cp314-cp314-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (94 kB)
+2026-07-14T12:23:17.389112136Z Collecting idna>=2.0 (from yarl<2.0,>=1.17.0->aiohttp>=3.9.0->-r requirements.txt (line 5))
+2026-07-14T12:23:17.398775581Z   Downloading idna-3.18-py3-none-any.whl.metadata (6.1 kB)
+2026-07-14T12:23:17.431523755Z Downloading flask-3.1.3-py3-none-any.whl (103 kB)
+2026-07-14T12:23:17.462120944Z Downloading python_dotenv-1.2.2-py3-none-any.whl (22 kB)
+2026-07-14T12:23:17.476178432Z Downloading gunicorn-26.0.0-py3-none-any.whl (212 kB)
+2026-07-14T12:23:17.515095027Z Downloading discord_py-2.7.1-py3-none-any.whl (1.2 MB)
+2026-07-14T12:23:17.62368491Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.2/1.2 MB 12.3 MB/s  0:00:00
+2026-07-14T12:23:17.63360717Z Downloading aiohttp-3.14.1-cp314-cp314-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (1.8 MB)
+2026-07-14T12:23:17.725952868Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.8/1.8 MB 20.3 MB/s  0:00:00
+2026-07-14T12:23:17.736065613Z Downloading multidict-6.7.1-cp314-cp314-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (248 kB)
+2026-07-14T12:23:17.767967489Z Downloading yarl-1.24.2-cp314-cp314-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (107 kB)
+2026-07-14T12:23:17.783418806Z Downloading aiohappyeyeballs-2.7.1-py3-none-any.whl (15 kB)
+2026-07-14T12:23:17.796363861Z Downloading aiosignal-1.4.0-py3-none-any.whl (7.5 kB)
+2026-07-14T12:23:17.809238884Z Downloading attrs-26.1.0-py3-none-any.whl (67 kB)
+2026-07-14T12:23:17.822651288Z Downloading blinker-1.9.0-py3-none-any.whl (8.5 kB)
+2026-07-14T12:23:17.835253765Z Downloading click-8.4.2-py3-none-any.whl (119 kB)
+2026-07-14T12:23:17.852876049Z Downloading frozenlist-1.8.0-cp314-cp314-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl (231 kB)
+2026-07-14T12:23:17.874428866Z Downloading idna-3.18-py3-none-any.whl (65 kB)
+2026-07-14T12:23:17.888900483Z Downloading itsdangerous-2.2.0-py3-none-any.whl (16 kB)
+2026-07-14T12:23:17.901340247Z Downloading jinja2-3.1.6-py3-none-any.whl (134 kB)
+2026-07-14T12:23:17.918160823Z Downloading markupsafe-3.0.3-cp314-cp314-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (23 kB)
+2026-07-14T12:23:17.930853312Z Downloading propcache-0.5.2-cp314-cp314-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (61 kB)
+2026-07-14T12:23:17.944200226Z Downloading werkzeug-3.1.8-py3-none-any.whl (226 kB)
+2026-07-14T12:23:17.97084654Z Downloading audioop_lts-0.2.2-cp313-abi3-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl (85 kB)
+2026-07-14T12:23:17.985608944Z Downloading packaging-26.2-py3-none-any.whl (100 kB)
+2026-07-14T12:23:18.04534525Z Installing collected packages: python-dotenv, propcache, packaging, multidict, markupsafe, itsdangerous, idna, frozenlist, click, blinker, audioop-lts, attrs, aiohappyeyeballs, yarl, werkzeug, jinja2, gunicorn, aiosignal, Flask, aiohttp, discord.py
+2026-07-14T12:23:20.774619749Z 
+2026-07-14T12:23:20.777804586Z Successfully installed Flask-3.1.3 aiohappyeyeballs-2.7.1 aiohttp-3.14.1 aiosignal-1.4.0 attrs-26.1.0 audioop-lts-0.2.2 blinker-1.9.0 click-8.4.2 discord.py-2.7.1 frozenlist-1.8.0 gunicorn-26.0.0 idna-3.18 itsdangerous-2.2.0 jinja2-3.1.6 markupsafe-3.0.3 multidict-6.7.1 packaging-26.2 propcache-0.5.2 python-dotenv-1.2.2 werkzeug-3.1.8 yarl-1.24.2
+2026-07-14T12:23:21.006999426Z 
+2026-07-14T12:23:21.007024707Z [notice] A new release of pip is available: 25.3 -> 26.1.2
+2026-07-14T12:23:21.007029396Z [notice] To update, run: pip install --upgrade pip
+2026-07-14T12:23:24.528498414Z ==> Uploading build...
+2026-07-14T12:23:32.441418469Z ==> Uploaded in 5.8s. Compression took 2.1s
+2026-07-14T12:23:32.512107648Z ==> Build successful 🎉
+2026-07-14T12:23:37.004362989Z ==> Deploying...
+2026-07-14T12:23:37.068156976Z ==> Setting WEB_CONCURRENCY=1 by default, based on available CPUs in the instance
+2026-07-14T12:23:51.081989922Z ==> Running 'python main.py'
+2026-07-14T12:24:08.046573427Z ==> Your service is live 🎉
+2026-07-14T12:24:08.120881121Z ==> 
+2026-07-14T12:24:08.12429823Z ==> ///////////////////////////////////////////////////////////
+2026-07-14T12:24:08.127309966Z ==> 
+2026-07-14T12:24:08.130493168Z ==> Available at your primary URL https://bot-discord-ministro-1.onrender.com
+2026-07-14T12:24:08.1343131Z ==> 
+2026-07-14T12:24:08.137268614Z ==> ///////////////////////////////////////////////////////////
+2026-07-14T12:24:03.093678153Z [2026-07-14 12:24:03] [INFO    ] discord.client: logging in using static token
+2026-07-14T12:24:03.09477726Z Panel web iniciado en puerto 10000
+2026-07-14T12:24:03.094795691Z  * Serving Flask app 'app'
+2026-07-14T12:24:03.094800362Z  * Debug mode: off
+2026-07-14T12:24:03.286983126Z WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+2026-07-14T12:24:03.287009458Z  * Running on all addresses (0.0.0.0)
+2026-07-14T12:24:03.287014198Z  * Running on http://127.0.0.1:10000
+2026-07-14T12:24:03.287018248Z  * Running on http://10.29.59.216:10000
+2026-07-14T12:24:03.287023019Z Press CTRL+C to quit
+2026-07-14T12:24:03.67927345Z 127.0.0.1 - - [14/Jul/2026 12:24:03] "HEAD / HTTP/1.1" 302 -
+2026-07-14T12:24:04.237385598Z [2026-07-14 12:24:04] [INFO    ] discord.gateway: Shard ID None has connected to Gateway (Session ID: 45ba4bc3604b696ef7f5d30f8d054a52).
+2026-07-14T12:24:08.072281148Z 127.0.0.1 - - [14/Jul/2026 12:24:08] "GET / HTTP/1.1" 302 -
+2026-07-14T12:24:08.109858394Z 127.0.0.1 - - [14/Jul/2026 12:24:08] "GET /login HTTP/1.1" 200 -
