@@ -35,6 +35,7 @@ COMANDOS = [
     {"categoria": "🎞️ GIFs",       "nombre": "pitola",    "uso": ",pitola",                         "slash": True,  "descripcion": "GIF aleatorio de pistola.", "permisos": "—"},
     {"categoria": "🎞️ GIFs",       "nombre": "sonata",    "uso": ",sonata",                         "slash": True,  "descripcion": "GIF aleatorio de Hyundai Sonata.", "permisos": "—"},
     {"categoria": "🎮 Minecraft",   "nombre": "ip",        "uso": ",ip",                             "slash": True,  "descripcion": "IP y tutorial de instalación del servidor DawnCraft.", "permisos": "—"},
+    {"categoria": "ℹ️ Información", "nombre": "status",    "uso": ",status",                         "slash": True,  "descripcion": "Estado en vivo del bot: latencia WebSocket, API, uptime y stats.", "permisos": "—"},
 ]
 
 # ─── HELPERS ──────────────────────────────────────────────────

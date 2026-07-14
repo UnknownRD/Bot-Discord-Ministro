@@ -17,6 +17,7 @@ intents.message_content = True
 intents.members = True
 
 bot = commands.Bot(command_prefix=',', intents=intents, case_insensitive=True, help_command=None)
+bot_start_time = None
 
 # ─── LOADERS JSON ─────────────────────────────────────────────
 
@@ -96,6 +97,8 @@ async def send(ctx_or_int, **kwargs):
 
 @bot.event
 async def on_ready():
+    global bot_start_time
+    bot_start_time = datetime.datetime.utcnow()
     await bot.tree.sync()
     activity = discord.Activity(type=discord.ActivityType.watching, name="el servidor 👀")
     await bot.change_presence(status=discord.Status.online, activity=activity)
@@ -366,6 +369,82 @@ async def enviar_avatar(ctx_or_int, miembro: discord.Member):
     e.set_image(url=miembro.display_avatar.url)
     e.add_field(name="Enlace directo", value=f"[Click aquí]({miembro.display_avatar.url})")
     await send(ctx_or_int, embed=e)
+
+@bot.command(name='status', aliases=['estado', 'stats'])
+async def status_prefix(ctx):
+    await enviar_status(ctx)
+
+@bot.tree.command(name="status", description="Estado en vivo del bot: latencia, uptime y stats")
+async def status_slash(interaction: discord.Interaction):
+    await enviar_status(interaction)
+
+async def enviar_status(ctx_or_int):
+    es_slash = isinstance(ctx_or_int, discord.Interaction)
+
+    # Medir latencia API (tiempo real de respuesta)
+    if es_slash:
+        await ctx_or_int.response.defer()
+    inicio = datetime.datetime.utcnow()
+    if es_slash:
+        msg = await ctx_or_int.followup.send("📡 Midiendo...")
+    else:
+        msg = await ctx_or_int.send("📡 Midiendo...")
+    api_latency = (datetime.datetime.utcnow() - inicio).total_seconds() * 1000
+
+    # WebSocket latency
+    ws_latency = round(bot.latency * 1000)
+    api_latency = round(api_latency)
+
+    # Uptime
+    if bot_start_time:
+        delta = datetime.datetime.utcnow() - bot_start_time
+        dias = delta.days
+        horas, rem = divmod(delta.seconds, 3600)
+        minutos, segundos = divmod(rem, 60)
+        uptime_str = f"{dias}d {horas}h {minutos}m {segundos}s"
+    else:
+        uptime_str = "Desconocido"
+
+    # Indicador de color según latencia
+    def status_emoji(ms):
+        if ms < 100:   return "🟢"
+        elif ms < 200: return "🟡"
+        else:          return "🔴"
+
+    def barra(ms, max_ms=300):
+        filled = min(round((ms / max_ms) * 10), 10)
+        return "█" * filled + "░" * (10 - filled)
+
+    total_miembros = sum(g.member_count for g in bot.guilds)
+
+    color = discord.Color.green() if ws_latency < 100 else discord.Color.orange() if ws_latency < 200 else discord.Color.red()
+
+    e = discord.Embed(title="📊 Estado del Bot", color=color, timestamp=datetime.datetime.utcnow())
+    e.add_field(
+        name="🌐 Latencia WebSocket",
+        value=f"{status_emoji(ws_latency)} `{ws_latency}ms`\n`{barra(ws_latency)}`",
+        inline=True
+    )
+    e.add_field(
+        name="⚡ Latencia API",
+        value=f"{status_emoji(api_latency)} `{api_latency}ms`\n`{barra(api_latency)}`",
+        inline=True
+    )
+    e.add_field(name="\u200b", value="\u200b", inline=True)
+    e.add_field(name="⏱️ Uptime", value=f"`{uptime_str}`", inline=True)
+    e.add_field(name="🏠 Servidores", value=f"`{len(bot.guilds)}`", inline=True)
+    e.add_field(name="👥 Miembros visibles", value=f"`{total_miembros}`", inline=True)
+    e.add_field(
+        name="🤖 Estado general",
+        value=(
+            f"{'🟢 Online' if ws_latency < 200 else '🔴 Con problemas'}\n"
+            f"Conectado como **{bot.user.name}**"
+        ),
+        inline=False
+    )
+    e.set_footer(text="Actualizado ahora mismo")
+
+    await msg.edit(content=None, embed=e)
 
 @bot.command(name='ping')
 async def ping_prefix(ctx):
