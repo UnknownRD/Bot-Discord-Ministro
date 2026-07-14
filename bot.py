@@ -14,6 +14,7 @@ TOKEN = os.getenv('DISCORD_TOKEN')
 # ─── SETUP DEL BOT ────────────────────────────────────────────
 intents = discord.Intents.default()
 intents.message_content = True
+intents.members = True
 
 bot = commands.Bot(command_prefix=',', intents=intents, case_insensitive=True, help_command=None)
 
