@@ -34,6 +34,7 @@ COMANDOS = [
     {"categoria": "🎞️ GIFs",       "nombre": "gif",       "uso": ",gif término",                    "slash": True,  "descripcion": "Busca cualquier GIF en Klipy.", "permisos": "—"},
     {"categoria": "🎞️ GIFs",       "nombre": "pitola",    "uso": ",pitola",                         "slash": True,  "descripcion": "GIF aleatorio de pistola.", "permisos": "—"},
     {"categoria": "🎞️ GIFs",       "nombre": "sonata",    "uso": ",sonata",                         "slash": True,  "descripcion": "GIF aleatorio de Hyundai Sonata.", "permisos": "—"},
+    {"categoria": "🎮 Minecraft",   "nombre": "ip",        "uso": ",ip",                             "slash": True,  "descripcion": "IP y tutorial de instalación del servidor DawnCraft.", "permisos": "—"},
 ]
 
 # ─── HELPERS ──────────────────────────────────────────────────

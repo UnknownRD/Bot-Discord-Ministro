@@ -526,6 +526,51 @@ async def enviar_klipy_embed(ctx_or_int, query: str, color):
     e.set_image(url=gif_url)
     await send(ctx_or_int, embed=e)
 
+# ─── MINECRAFT IP ─────────────────────────────────────────────
+
+@bot.command(name='ip')
+async def ip_prefix(ctx):
+    await enviar_ip(ctx)
+
+@bot.tree.command(name="ip", description="IP del servidor de Minecraft DawnCraft")
+async def ip_slash(interaction: discord.Interaction):
+    await enviar_ip(interaction)
+
+async def enviar_ip(ctx_or_int):
+    e = discord.Embed(
+        title="🌍 Servidor de Minecraft — DawnCraft",
+        color=discord.Color.from_rgb(34, 139, 34)
+    )
+    e.add_field(
+        name="📡 IP del Servidor",
+        value="`until-reid.gl.joinmc.link`",
+        inline=False
+    )
+    e.add_field(
+        name="🚀 Launcher",
+        value="SKLauncher **4.0** (versión recomendada)",
+        inline=True
+    )
+    e.add_field(
+        name="🗺️ Modpack",
+        value="DawnCraft (CurseForge)",
+        inline=True
+    )
+    e.add_field(
+        name="📖 ¿Cómo instalarlo? (SKLauncher + CurseForge)",
+        value=(
+            "**1.** Descarga **SKLauncher 4.0** desde [sklauncher.com](https://skmedix.pl/sklauncher)\n"
+            "**2.** Abre SKLauncher → ve a **Installations** → clic en **New Installation**\n"
+            "**3.** Selecciona la versión de Minecraft que usa DawnCraft *(Forge requerido)*\n"
+            "**4.** Descarga el modpack **DawnCraft** desde [CurseForge](https://www.curseforge.com/minecraft/modpacks/dawn-craft)\n"
+            "**5.** Extrae la carpeta de mods y cópiala a `.minecraft/mods` *(o usa la ruta de SKLauncher)*\n"
+            "**6.** Inicia el juego con el perfil Forge → entra a **Multijugador** y pega la IP 👆"
+        ),
+        inline=False
+    )
+    e.set_footer(text="¡Nos vemos en el servidor! ⚔️")
+    await send(ctx_or_int, embed=e)
+
 # ─── ARRANQUE ─────────────────────────────────────────────────
 
 def run_bot():
